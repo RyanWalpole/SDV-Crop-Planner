@@ -1,8 +1,8 @@
 // CONSTANTS
 var SEASON_DAYS = 28;
 var YEAR_DAYS = SEASON_DAYS * 4;
-var VERSION = "2.0";
-var DATA_VERSION = "2";
+var VERSION = "1.0.1";
+var DATA_VERSION = "3";
 
 
 // Save/load helper functions
@@ -112,7 +112,7 @@ function planner_controller($scope){
 		for (var i = 0; i < self.days.length; i++) self.days[i] = i + 1;
 		self.seasons = [new Season(0), new Season(1), new Season(2), new Season(3)];
 		self.cseason = self.seasons[0];
-		self.cinfo_settings.season_options = self.seasons;
+		self.cinfo_settings.season_options = [self.seasons[0], self.seasons[1], self.seasons[2]];
 		
 		// Enable bootstrap tooltips
 		$("body").tooltip({selector: "[data-toggle=tooltip]", trigger: "hover", container: "body"});
@@ -1333,7 +1333,7 @@ function planner_controller($scope){
 			
 			var min_revenue = crop.get_sell(0);
 			var max_revenue = (min_revenue*regular_chance) + (crop.get_sell(1)*silver_chance) + (crop.get_sell(2)*gold_chance);
-			max_revenue = Math.min(crop.get_sell(2), max_revenue);
+			max_revenue = Math.max(crop.get_sell(2), max_revenue);
 			
 			// Quality from fertilizer only applies to picked harvest
 			// and not to extra dropped yields
@@ -1343,7 +1343,7 @@ function planner_controller($scope){
 			
 			// Tiller profession (ID 1)
 			// [SOURCE: StardewValley/Object.cs : function sellToStorePrice]
-			if (planner.player.tiller){
+			if (planner.player.tiller && (crop.id !== 'coffee_bean' || crop.id !== 'sweet_gem_berry')){
 				self.revenue.min = Math.floor(self.revenue.min * 1.1);
 				self.revenue.max = Math.floor(self.revenue.max * 1.1);
 			}
@@ -1460,6 +1460,8 @@ function planner_controller($scope){
 		for (var i = 0; i < stages.length; i++){
 			days += stages[i];
 		}
+
+		days = correct_grow_time(this.crop.id, days, rate);
 		
 		return days;
 	};
