@@ -24,7 +24,7 @@
 }
 
 .clearfix{
-	&:before, &:after{
+	&:after, &:before{
 		content: " ";
 		display: table;
 	}
@@ -38,7 +38,6 @@
 /********************************
 	BASIC STYLE
 ********************************/
-@import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro);
 @border_color: #5E360C;
 @content_max_width: 1400px;
 
@@ -57,7 +56,7 @@
 	}
 }
 
-html, body{
+body, html{
 	margin: 0; padding: 0;
 }
 
@@ -72,7 +71,7 @@ body{
 	
 	color: #111;
 	font-size: 14px;
-	font-family: Source Sans Pro, Verdana;
+	font-family: sans-serif;
 	
 	&.sidebar_open{
 		overflow: hidden;
@@ -388,7 +387,7 @@ header{
 	.crop_info{
 		.ci_header{
 			margin-bottom: 20px;
-			.clearfix;
+			.clearfix();
 			
 			img{
 				float: left;
@@ -450,7 +449,7 @@ header{
 			height: 25px;
 			border: 1px solid #888;
 			border-radius: 0px;
-			.clearfix;
+			.clearfix();
 			
 			> div{
 				height: 100%;
@@ -575,7 +574,7 @@ header{
 	}
 	
 	.year_navigation{
-		.clearfix;
+		.clearfix();
 		
 		> div{
 			float: left;
@@ -732,14 +731,14 @@ header{
 /********************************
 	CALENDAR
 ********************************/
-@day_width: 100%/7;
+@day_width: 14.28571429%;
 #calendar{
 	background-color: #FBEBC2;
 	border: 3px solid @border_color;
 	
 	// Day abbreviations at top of calendar
 	.day_names{
-		.clearfix;
+		.clearfix();
 		
 		.day_name{
 			width: @day_width;
@@ -756,7 +755,7 @@ header{
 	}
 	
 	.day_container{
-		.clearfix;
+		.clearfix();
 		
 		.day{
 			width: @day_width;
@@ -770,7 +769,7 @@ header{
 			background-color: #DDD1B2;
 			cursor: pointer;
 			.transition(all .2s);
-			.clearfix;
+			.clearfix();
 			
 			&.filled{
 				//background-color: lighten(#DDD1B2, 3%);
@@ -811,7 +810,7 @@ header{
 					top: 0; left: 0;
 					width: 100%;
 					overflow: hidden;
-					.clearfix;
+					.clearfix();
 					
 					.date{
 						position: static !important;
@@ -863,7 +862,7 @@ header{
 			
 			.planting, .harvesting{
 				padding-bottom: 11px;
-				.clearfix;
+				.clearfix();
 				
 				.plan{
 					float: left;
@@ -1051,7 +1050,7 @@ header{
 			border: 1px solid #888;
 			border-radius: 2px;
 			margin-bottom: 38px;
-			.clearfix;
+			.clearfix();
 			
 			> div{
 				height: 100%;
