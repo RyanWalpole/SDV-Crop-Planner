@@ -157,8 +157,20 @@ function correct_grow_time(crop_id, days, rate){
             }
             return days
         },
-        
+        "winter_seeds": function(){
+            return days
+        },
+        "spring_seeds": function(){
+            return days
+        },
+        "summer_seeds": function(){
+            return days
+        },
+        "fall_seeds": function(){
+            return days
+        },
+
     }
-    
+
     return cropsTable[crop_id]();
 }
