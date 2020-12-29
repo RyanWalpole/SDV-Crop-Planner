@@ -7,6 +7,16 @@ A tool for planning crop schedules in the Stardew Valley game.
 <a href="https://www.reddit.com/r/StardewValley/comments/55puw1/crop_planner_v2_released_multiple_years_importing/" target="_blank">v2 Reddit thread</a>
 
 ---
+### New in v2.1
+
+* Added Wild Seeds
+    * Crops from Wild Seeds are generated randomly assuming same weight in all crops
+    * Buying price of Wild Seeds calculated by adding up the minimum price of all crafting ingredients
+    
+* Added foraging professions 
+
+---
+## By Exinil 
 
 ### New in v2
 

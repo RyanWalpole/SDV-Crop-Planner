@@ -1,8 +1,9 @@
 // CONSTANTS
 var SEASON_DAYS = 28;
 var YEAR_DAYS = SEASON_DAYS * 4;
-var VERSION = "1.0.1";
-var DATA_VERSION = "3";
+var VERSION = "2.1";
+var DATA_VERSION = "4";
+var CROPS_ARRAY = []
 
 
 // Save/load helper functions
