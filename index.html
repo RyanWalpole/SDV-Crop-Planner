@@ -231,7 +231,7 @@
 									</tr>
 								</thead>
 								<tbody>
-									<tr ng-repeat="crop in self.crops_list | orderBy:self.cinfo_settings.sort:self.cinfo_settings.order | filter: self.cinfo_settings.search" class="crop" ng-show="crop.can_grow(self.cinfo_settings.seasons, 1) && (!self.cinfo_settings.regrows || crop.regrow)" ng-click="self.sidebar.open_crop(crop)">
+									<tr ng-repeat="crop in self.crops_list | orderBy:self.cinfo_settings.sort:self.cinfo_settings.order | filter: self.cinfo_settings.search" class="crop" ng-show="crop.can_grow(self.cinfo_settings.seasons, 1) && (!self.cinfo_settings.regrows || crop.regrow) && (crop.possible_crops.length == 0)" ng-click="self.sidebar.open_crop(crop)">
 										<td width="1"><img ng-src="{{crop.get_image()}}"></td>
 										<td class="name">
 											{{crop.name}}
