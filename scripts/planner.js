@@ -834,6 +834,8 @@ function planner_controller($scope){
 		self.level = 0; // farming level; starts at 0
 		self.tiller = false;
 		self.agriculturist = false;
+		self.gatherer = false;
+		self.botanist = false;
 
 		self.load = load
 		self.save = save;
@@ -859,8 +861,10 @@ function planner_controller($scope){
 			var pdata = LOAD_JSON("player");
 			if (!pdata) return;
 
-			if (pdata.tiller) self.tiller = true;
-			if (pdata.agriculturist) self.agriculturist = true;
+			if (pdata.tiller) self.tiller = pdata.tiller;
+			if (pdata.agriculturist) self.agriculturist = pdata.agriculturist;
+			if (pdata.gatherer) self.gatherer = pdata.gatherer;
+			if (pdata.botanist) self.botanist = pdata.botanist;
 			if (pdata.level) self.level = pdata.level;
 			if (pdata.settings) self.settings = pdata.settings;
 		}
@@ -870,6 +874,8 @@ function planner_controller($scope){
 			var pdata = {};
 			if (self.tiller) pdata.tiller = self.tiller;
 			if (self.agriculturist) pdata.agriculturist = self.agriculturist;
+			if (self.gatherer) pdata.gatherer = self.gatherer;
+			if (self.botanist) pdata.botanist = self.botanist;
 			pdata.settings = self.settings;
 			pdata.level = self.level;
 			SAVE_JSON("player", pdata);
@@ -884,6 +890,11 @@ function planner_controller($scope){
 				self.agriculturist = false;
 			} else if (self.agriculturist && key == "agriculturist"){
 				self.tiller = true;
+			}
+			if (!self.gatherer && key == "gatherer"){
+				self.botanist = false;
+			} else if (self.botanist && key == "botanist"){
+				self.gatherer = true;
 			}
 		}
 
@@ -1334,6 +1345,19 @@ function planner_controller($scope){
 			var min_revenue = crop.get_sell(0);
 			var max_revenue = (min_revenue*regular_chance) + (crop.get_sell(1)*silver_chance) + (crop.get_sell(2)*gold_chance);
 			max_revenue = Math.max(crop.get_sell(2), max_revenue);
+
+			// Gatherer profession
+			if (planner.player.gatherer && crop.wild){
+				for (var i = 0; i < self.yield.min; i++){
+					if (Math.floor(Math.random() * 10) < 2) self.yield.max += 1
+				}
+			}
+
+			// Botanist profession (ID 16)
+			if (planner.player.botanist && (crop.wild)){
+				min_revenue = crop.get_sell(4)
+				max_revenue = min_revenue
+			}
 
 			// Quality from fertilizer only applies to picked harvest
 			// and not to extra dropped yields

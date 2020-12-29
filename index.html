@@ -339,9 +339,20 @@
 						<div class="btn" ng-class="{'btn-success': self.player.tiller, 'btn-default': !self.player.tiller}" ng-click="self.player.toggle_perk('tiller')" data-toggle="tooltip" title="Crops worth 10% more">
 							<i class="fa fa-tint"></i> Tiller
 						</div>
-						
+
 						<div class="btn" ng-class="{'btn-success': self.player.agriculturist, 'btn-default': !self.player.agriculturist}" ng-click="self.player.toggle_perk('agriculturist')" data-toggle="tooltip" title="All crops grow 10% faster">
 							<i class="fa fa-pagelines"></i> Agriculturist
+						</div>
+					</div>
+
+					<div class="foraging_professions">
+						<h4>Foraging Professions</h4>
+						<div class="btn" ng-class="{'btn-success': self.player.gatherer, 'btn-default': !self.player.gatherer}" ng-click="self.player.toggle_perk('gatherer')" data-toggle="tooltip" title="20% chance of double harvest">
+							<i class="fa fa-shopping-basket"></i> Gatherer
+						</div>
+
+						<div class="btn" ng-class="{'btn-success': self.player.botanist, 'btn-default': !self.player.botanist}" ng-click="self.player.toggle_perk('botanist')" data-toggle="tooltip" title="Foraged items are always highest quality.">
+							<i class="fa fa-leaf"></i> Botanist
 						</div>
 					</div>
 					
