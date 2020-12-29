@@ -169,7 +169,18 @@ function correct_grow_time(crop_id, days, rate){
         "fall_seeds": function(){
             return days
         },
-
+        "crocus": function(){
+            return days
+        },
+        "snow_yam": function(){
+            return days
+        },
+        "winter_root": function(){
+            return days
+        },
+        "crystal_fruit": function(){
+            return days
+        }
     }
 
     return cropsTable[crop_id]();
