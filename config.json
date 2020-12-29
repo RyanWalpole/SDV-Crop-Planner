@@ -243,6 +243,32 @@
 			]
 		},
 		{
+			"buy": 0,
+			"harvest": {},
+			"id": "crocus",
+			"index": 418,
+			"name": "Crocus",
+			"wild": true,
+			"seasons": [
+				"winter"
+			],
+			"sell": 60,
+			"stages": []
+		},
+		{
+			"buy": 0,
+			"harvest": {},
+			"id": "crystal_fruit",
+			"index": 414,
+			"name": "Crystal Fruit",
+			"wild": true,
+			"seasons": [
+				"winter"
+			],
+			"sell": 150,
+			"stages": []
+		},
+		{
 			"buy": 20,
 			"harvest": {
 				"extra_chance": 0.002,
@@ -281,6 +307,27 @@
 				4,
 				4,
 				3
+			]
+		},
+		{
+			"buy": 0,
+			"harvest": {},
+			"id": "fall_seeds",
+			"index": 497,
+			"name": "Fall Seeds",
+			"possible_crops": [
+				"blackberry",
+				"common_mushroom",
+				"hazelnut",
+				"wild_plum"
+			],
+			"seasons": [
+				"fall"
+			],
+			"sell": 20,
+			"stages": [
+				3,
+				4
 			]
 		},
 		{
@@ -549,6 +596,40 @@
 			]
 		},
 		{
+			"buy": 0,
+			"harvest": {},
+			"id": "snow_yam",
+			"index": 416,
+			"name": "Snow Yam",
+			"wild": true,
+			"seasons": [
+				"winter"
+			],
+			"sell": 100,
+			"stages": []
+		},
+		{
+			"buy": 0,
+			"harvest": {},
+			"id": "spring_seeds",
+			"index": 495,
+			"name": "Spring Seeds",
+			"possible_crops": [
+				"daffodil",
+				"dandelion",
+				"leek",
+				"wild_horseradish"
+			],
+			"seasons": [
+				"spring"
+			],
+			"sell": 30,
+			"stages": [
+				3,
+				4
+			]
+		},
+		{
 			"buy": 400,
 			"harvest": {},
 			"id": "starfruit",
@@ -588,6 +669,26 @@
 				2,
 				2,
 				2
+			]
+		},
+		{
+			"buy": 0,
+			"harvest": {},
+			"id": "summer_seeds",
+			"index": 496,
+			"name": "Summer Seeds",
+			"possible_crops": [
+				"grape",
+				"spice_berry",
+				"sweet_pea"
+			],
+			"seasons": [
+				"summer"
+			],
+			"sell": 50,
+			"stages": [
+				3,
+				4
 			]
 		},
 		{
@@ -728,6 +829,19 @@
 			]
 		},
 		{
+			"buy": 0,
+			"harvest": {},
+			"id": "winter_root",
+			"index": 412,
+			"name": "Winter Root",
+			"wild": true,
+			"seasons": [
+				"winter"
+			],
+			"sell": 70,
+			"stages": []
+		},
+		{
 			"buy": 60,
 			"harvest": {},
 			"id": "yam",
@@ -744,63 +858,20 @@
 				3
 			]
 		},
-        {
-			"buy": 0,
-			"harvest": {},
-			"id": "spring_seeds",
-			"index": 495,
-			"name": "Spring Forage",
-			"wiki_page": "Spring_Seeds",
-			"seasons": [
-				"spring"
-			],
-			"sell": 30,
-			"stages": [
-				3,
-				4
-			]
-		},
-		{
-			"buy": 0,
-			"harvest": {},
-			"id": "summer_seeds",
-			"index": 496,
-			"name": "Summer Forage",
-			"wiki_page": "Summer_Seeds",
-			"seasons": [
-				"summer"
-			],
-			"sell": 50,
-			"stages": [
-				3,
-				4
-			]
-		},
-		{
-			"buy": 0,
-			"harvest": {},
-			"id": "fall_seeds",
-			"index": 497,
-			"name": "Fall Forage",
-			"wiki_page": "Fall_Seeds",
-			"seasons": [
-				"fall"
-			],
-			"sell": 20,
-			"stages": [
-				3,
-				4
-			]
-		},
 		{
 			"buy": 0,
 			"harvest": {},
 			"id": "winter_seeds",
 			"index": 498,
-			"name": "Winter Forage",
-			"wiki_page": "Winter_Seeds",
+			"name": "Winter Seeds",
 			"seasons": [
 				"winter"
+			],
+			"possible_crops": [
+				"crocus",
+				"crystal_fruit",
+				"snow_yam",
+				"winter_root"
 			],
 			"sell": 60,
 			"stages": [
