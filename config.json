@@ -75,6 +75,19 @@
 			]
 		},
 		{
+			"buy": 0,
+			"harvest": {},
+			"id": "blackberry",
+			"index": 410,
+			"name": "Blackberry",
+			"wild": true,
+			"seasons": [
+				"fall"
+			],
+			"sell": 20,
+			"stages": []
+		},
+		{
 			"buy": 30,
 			"harvest": {},
 			"id": "blue_jazz",
@@ -199,6 +212,19 @@
 			]
 		},
 		{
+			"buy": 0,
+			"harvest": {},
+			"id": "common_mushroom",
+			"index": 404,
+			"name": "Common Mushroom",
+			"wild": true,
+			"seasons": [
+				"fall"
+			],
+			"sell": 40,
+			"stages": []
+		},
+		{
 			"buy": 150,
 			"harvest": {},
 			"id": "corn",
@@ -269,6 +295,32 @@
 			"stages": []
 		},
 		{
+			"buy": 0,
+			"harvest": {},
+			"id": "daffodil",
+			"index": 18,
+			"name": "Daffodil",
+			"wild": true,
+			"seasons": [
+				"spring"
+			],
+			"sell": 30,
+			"stages": []
+		},
+		{
+			"buy": 0,
+			"harvest": {},
+			"id": "dandelion",
+			"index": 22,
+			"name": "Dandelion",
+			"wild": true,
+			"seasons": [
+				"spring"
+			],
+			"sell": 40,
+			"stages": []
+		},
+		{
 			"buy": 20,
 			"harvest": {
 				"extra_chance": 0.002,
@@ -310,7 +362,7 @@
 			]
 		},
 		{
-			"buy": 0,
+			"buy": 23,
 			"harvest": {},
 			"id": "fall_seeds",
 			"index": 497,
@@ -368,6 +420,19 @@
 			"trellis": true
 		},
 		{
+		"buy": 0,
+		"harvest": {},
+		"id": "grape_wild",
+		"index": 398,
+		"name": "Grape",
+		"wild": true,
+		"seasons": [
+			"summer"
+		],
+		"sell": 80,
+		"stages": []
+		},
+		{
 			"buy": 60,
 			"harvest": {},
 			"id": "green_bean",
@@ -386,6 +451,19 @@
 				4
 			],
 			"trellis": true
+		},
+		{
+			"buy": 0,
+			"harvest": {},
+			"id": "hazelnut",
+			"index": 408,
+			"name": "Hazelnut",
+			"wild": true,
+			"seasons": [
+				"fall"
+			],
+			"sell": 90,
+			"stages": []
 		},
 		{
 			"buy": 60,
@@ -448,6 +526,19 @@
 				2,
 				1
 			]
+		},
+		{
+			"buy": 0,
+			"harvest": {},
+			"id": "leek",
+			"index": 20,
+			"name": "Leek",
+			"wild": true,
+			"seasons": [
+				"spring"
+			],
+			"sell": 60,
+			"stages": []
 		},
 		{
 			"buy": 80,
@@ -611,6 +702,19 @@
 		{
 			"buy": 0,
 			"harvest": {},
+			"id": "spice_berry",
+			"index": 396,
+			"name": "Spice Berry",
+			"wild": true,
+			"seasons": [
+				"summer"
+			],
+			"sell": 80,
+			"stages": []
+		},
+		{
+			"buy": 18,
+			"harvest": {},
 			"id": "spring_seeds",
 			"index": 495,
 			"name": "Spring Seeds",
@@ -672,13 +776,13 @@
 			]
 		},
 		{
-			"buy": 0,
+			"buy": 21,
 			"harvest": {},
 			"id": "summer_seeds",
 			"index": 496,
 			"name": "Summer Seeds",
 			"possible_crops": [
-				"grape",
+				"grape_wild",
 				"spice_berry",
 				"sweet_pea"
 			],
@@ -744,6 +848,19 @@
 				6,
 				6
 			]
+		},
+		{
+			"buy": 0,
+			"harvest": {},
+			"id": "sweet_pea",
+			"index": 402,
+			"name": "Sweet Pea",
+			"wild": true,
+			"seasons": [
+				"summer"
+			],
+			"sell": 50,
+			"stages": []
 		},
 		{
 			"buy": 50,
@@ -831,6 +948,32 @@
 		{
 			"buy": 0,
 			"harvest": {},
+			"id": "wild_horseradish",
+			"index": 16,
+			"name": "Wild Horseradish",
+			"wild": true,
+			"seasons": [
+				"spring"
+			],
+			"sell": 50,
+			"stages": []
+		},
+		{
+			"buy": 0,
+			"harvest": {},
+			"id": "wild_plum",
+			"index": 406,
+			"name": "Wild Plum",
+			"wild": true,
+			"seasons": [
+				"fall"
+			],
+			"sell": 80,
+			"stages": []
+		},
+		{
+			"buy": 0,
+			"harvest": {},
 			"id": "winter_root",
 			"index": 412,
 			"name": "Winter Root",
@@ -859,7 +1002,7 @@
 			]
 		},
 		{
-			"buy": 0,
+			"buy": 38,
 			"harvest": {},
 			"id": "winter_seeds",
 			"index": 498,
