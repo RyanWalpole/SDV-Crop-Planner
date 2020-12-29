@@ -160,7 +160,7 @@ function planner_controller($scope){
 					self.crops_list.push(crop);
 					self.crops[crop.id] = crop;
 				});
-
+				CROPS_ARRAY = self.crops
 				// Process fertilizer data
 				$.each(self.config.fertilizer, function(i, fertilizer){
 					fertilizer = new Fertilizer(fertilizer);
@@ -336,7 +336,44 @@ function planner_controller($scope){
 
 				// Initial harvest
 				var harvests = [];
-				harvests.push(new Harvest(plan, first_harvest));
+
+				// Randomize harvest if it's a wild seed
+				if(crop.possible_crops != null){
+					var wildCropDict = {} // {wildCrop: amount}
+					var possibleWildCrops = crop.possible_crops // Wild seed's possible crops
+
+					// Fill dictionary
+					for (var i = 0; i < crop.possible_crops.length; i++){
+						wildCropDict[crop.possible_crops[i]] = 0
+					}
+
+					// Populate amount of wild crops randomly in dictionary
+					for (var i = 1; i <= plan.amount; i++){
+						var cropInfo = CROPS_ARRAY[possibleWildCrops[Math.floor(Math.random() * possibleWildCrops.length)]]
+						wildCropDict[cropInfo.id] += 1
+					}
+
+					// Generate a harvest for each crop
+					for (var wildCrop in wildCropDict) {
+
+						if (wildCropDict[wildCrop] != 0){
+							let planCopy = angular.copy(plan)
+
+							var cropInfo = CROPS_ARRAY[wildCrop]
+
+							planCopy.amount= wildCropDict[wildCrop]
+							planCopy.crop.id = cropInfo.id
+							planCopy.crop.name = cropInfo.name
+							planCopy.crop.sell = cropInfo.sell
+							planCopy.crop.wild = cropInfo.wild
+
+							harvests.push(new Harvest(planCopy, first_harvest))
+						}
+					}
+				}
+				else{
+					harvests.push(new Harvest(plan, first_harvest));
+				}
 
 				// Regrowth harvests
 				if (crop.regrow){
@@ -966,6 +1003,7 @@ function planner_controller($scope){
 		self.name;
 		self.sell;
 		self.buy;
+		self.possible_crops =[]
 		self.seasons = [];
 		self.stages = [];
 		self.regrow;
@@ -1002,7 +1040,8 @@ function planner_controller($scope){
 			self.seasons = data.seasons;
 			self.stages = data.stages;
 			self.regrow = data.regrow;
-			if (data.wild) self.wild = true;
+			if (data.wild) self.wild = data.wild;
+			if (data.possible_crops) self.possible_crops = data.possible_crops
 
 			// Harvest data
 			if (data.harvest.min) self.harvest.min = data.harvest.min;
@@ -1052,6 +1091,9 @@ function planner_controller($scope){
 	// Check if crop can grow on date/season
 	Crop.prototype.can_grow = function(date, is_season, in_greenhouse){
 		var self = this;
+
+		// Prevent from planting wild crops
+		if(self.wild) return false
 
 		// Expected numeric date, received array of seasons
 		if (date.constructor === Array){
@@ -1367,7 +1409,7 @@ function planner_controller($scope){
 
 			// Tiller profession (ID 1)
 			// [SOURCE: StardewValley/Object.cs : function sellToStorePrice]
-			if (planner.player.tiller && (crop.id !== 'coffee_bean' || crop.id !== 'sweet_gem_berry')){
+			if (planner.player.tiller && (crop.id !== 'coffee_bean' && crop.id !== 'sweet_gem_berry' && !crop.wild )){
 				self.revenue.min = Math.floor(self.revenue.min * 1.1);
 				self.revenue.max = Math.floor(self.revenue.max * 1.1);
 			}
