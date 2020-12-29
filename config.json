@@ -146,11 +146,12 @@
 			]
 		},
 		{
-			"buy": 0,
+			"buy": 150,
 			"harvest": {},
 			"id": "cactus_fruit",
 			"index": 802,
 			"name": "Cactus Fruit",
+			"note": "Sold in Oasis for 150g",
 			"regrow": 3,
 			"seasons": [
 				"spring",
