@@ -337,9 +337,10 @@ function planner_controller($scope){
 
 				// Initial harvest
 				var harvests = [];
+				var cropInfo = {}
 
 				// Randomize harvest if it's a wild seed
-				if(crop.possible_crops != null){
+				if(crop.possible_crops.length > 0 ){
 					var wildCropDict = {} // {wildCrop: amount}
 					var possibleWildCrops = crop.possible_crops // Wild seed's possible crops
 
@@ -350,7 +351,7 @@ function planner_controller($scope){
 
 					// Populate amount of wild crops randomly in dictionary
 					for (var i = 1; i <= plan.amount; i++){
-						var cropInfo = CROPS_ARRAY[possibleWildCrops[Math.floor(Math.random() * possibleWildCrops.length)]]
+						cropInfo = CROPS_ARRAY[possibleWildCrops[Math.floor(Math.random() * possibleWildCrops.length)]]
 						wildCropDict[cropInfo.id] += 1
 					}
 
@@ -360,7 +361,7 @@ function planner_controller($scope){
 						if (wildCropDict[wildCrop] != 0){
 							let planCopy = angular.copy(plan)
 
-							var cropInfo = CROPS_ARRAY[wildCrop]
+							cropInfo = CROPS_ARRAY[wildCrop]
 
 							planCopy.amount= wildCropDict[wildCrop]
 							planCopy.crop.id = cropInfo.id
