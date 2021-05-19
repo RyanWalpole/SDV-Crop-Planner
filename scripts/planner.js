@@ -49,7 +49,7 @@ function planner_controller($scope){
 	self.seasons = [];					// Array of seasons
 	self.SEASON_DAYS = SEASON_DAYS;		// Exposing SEASON_DAYS constant to app scope
 	self.crops_list = []; 				// [id, id, ...]
-	self.crops = {}; 					// {id: {data}}	
+	self.crops = {}; 					// {id: {data}}
 	self.fertilizer = {}; 				// [fertilizer, fertilizer, ...]
 	self.events = {};					// Birthdays & festivals
 
@@ -641,10 +641,13 @@ function planner_controller($scope){
 
 		var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 		var day = days[date % 7];
+		var abbrev_days = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
+		var abbrev_day = abbrev_days[date % 7];
 		var season = self.seasons[Math.floor((real_date - 1) / SEASON_DAYS)];
 		season = season.name;
 
 		var str = format.replace("%l", day)
+			.replace("%L", abbrev_day)
 			.replace("%j", date)
 			.replace("%S", nth)
 			.replace("%F", season);
