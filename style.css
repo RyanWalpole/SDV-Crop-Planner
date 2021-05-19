@@ -891,6 +891,28 @@ header .page_title {
   width: auto;
   padding: 6px;
 }
+@media only screen and (max-width: 767px) {
+  #crop_planner .plant_crop .col-xs-12 {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+}
+@media only screen and (max-width: 767px) {
+  #crop_planner .plant_crop .col-xs-4 {
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+}
+@media only screen and (max-width: 767px) {
+  #crop_planner .plant_crop .col-xs-4:nth-child(2) {
+    padding-left: 10px;
+  }
+}
+@media only screen and (max-width: 767px) {
+  #crop_planner .plant_crop .col-xs-4:last-child {
+    padding-right: 10px;
+  }
+}
 #crop_info th {
   cursor: pointer;
 }
