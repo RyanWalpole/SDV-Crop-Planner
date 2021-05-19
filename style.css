@@ -541,6 +541,12 @@ header .page_title {
 #top_menu .clear_buttons .btn-block + .btn-block {
   margin-top: 2px;
 }
+@media only screen and (max-width: 767px) {
+  #top_menu .clear_buttons .btn {
+    margin: 3px 12px;
+    white-space: normal;
+  }
+}
 /********************************
 	SEASON PICKER
 ********************************/
