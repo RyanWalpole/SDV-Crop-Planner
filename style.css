@@ -1,12 +1,12 @@
 /********************************
 	Crop Planner Stylesheet
-	
+
 	Compile with Less CSS:
 		lessc style.less style.css
-		
+
 	Or run utils/watch.py to
 	auto-compile on changes
-	
+
 	Use #dev fragment in url to
 	auto-refresh stylesheet
 ********************************/
@@ -364,7 +364,7 @@ header .page_title {
   opacity: 1;
 }
 #sb_settings .farm_professions .btn-default {
-  opacity: 0.6;
+  opacity: .6;
 }
 #sb_settings .farm_level {
   overflow: hidden;
@@ -549,7 +549,7 @@ header .page_title {
   background-color: #DDD1B2;
   border: 2px solid #5E360C;
   border-bottom: 0;
-  opacity: 0.5;
+  opacity: .5;
   cursor: pointer;
   position: relative;
   bottom: -6px;
@@ -560,7 +560,7 @@ header .page_title {
   transition: all 0.1s;
 }
 #season_picker .season:hover {
-  opacity: 0.65;
+  opacity: .65;
 }
 #season_picker .season.active {
   opacity: 1;
@@ -582,11 +582,8 @@ header .page_title {
   text-transform: capitalize;
 }
 @media only screen and (max-width: 767px) {
-  #season_picker .season .image {
-    display: none;
-  }
   #season_picker .season .name {
-    margin-left: 0;
+    display: none;
   }
 }
 #season_picker .season .profit {
@@ -925,7 +922,7 @@ header .page_title {
   opacity: 1;
 }
 #player_settings .settings .btn-default {
-  opacity: 0.5;
+  opacity: .5;
 }
 #player_settings .statistics {
   overflow: hidden;
