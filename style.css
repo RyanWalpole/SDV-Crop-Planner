@@ -487,6 +487,7 @@ header .page_title {
 }
 #top_menu > div .responsive-xs {
   margin-bottom: 10px;
+  padding: 0 5px;
 }
 #top_menu .year_navigation:after,
 #top_menu .year_navigation:before {
