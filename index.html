@@ -133,7 +133,7 @@
 
 						<div class="date_top">
 							<div class="date">
-								<span class="visible-xs">{{self.get_date(date, '%j')}}</span>
+								<span class="visible-xs">{{self.get_date(date, '%j-%l')}}</span>
 								<span class="hidden-xs">{{date%self.SEASON_DAYS>0 && date%self.SEASON_DAYS || self.SEASON_DAYS}}</span>
 							</div>
 							<div class="event" ng-show="self.events[date] && self.player.settings.show_events" title="{{self.events[date].get_text()}}">
