@@ -154,6 +154,12 @@ function correct_grow_time(crop_id, days, rate){
             }
             return days
         },
+        "i_taro_root": function(){
+            if (rate === 0.43000000000000005 ) {
+                return days+1;
+            }
+            return days
+        },
         "tea_leaves": function(){
             return days
         },
@@ -164,6 +170,12 @@ function correct_grow_time(crop_id, days, rate){
             return days
         },
         "unmilled_rice": function(){
+            return days
+        },
+        "i_unmilled_rice": function(){
+            if (rate === 0.33 || rate === 0.43000000000000005 ){
+                return days -1;
+            }
             return days
         },
         "wheat": function(){

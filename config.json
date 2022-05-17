@@ -921,6 +921,23 @@
 			]
 		},
 		{
+			"buy": 24,
+			"harvest": {},
+			"id": "i_taro_root",
+			"index": 273,
+			"name": "Irrigated Taro Root",
+			"seasons": [
+				"summer"
+			],
+			"sell": 100,
+			"stages": [
+				1,
+				1,
+				2,
+				3
+			]
+		},
+		{
 			"buy": 50,
 			"harvest": {
 				"extra_chance": 0.05,
@@ -981,6 +998,29 @@
 				1,
 				2,
 				2,
+				3
+			]
+		},
+		{
+			"buy": 40,
+			"harvest": {
+				"extra_chance": 0.1,
+				"level_increase": 10,
+				"max": 1,
+				"min": 1
+			},
+			"id": "i_unmilled_rice",
+			"index": 273,
+			"name": "Irrigated Unmilled Rice",
+			"scythe": true,
+			"seasons": [
+				"spring"
+			],
+			"sell": 30,
+			"stages": [
+				1,
+				1,
+				1,
 				3
 			]
 		},
