@@ -883,6 +883,23 @@
 			"stages": []
 		},
 		{
+			"buy": 24,
+			"harvest": {},
+			"id": "taro_root",
+			"index": 273,
+			"name": "Taro Root",
+			"seasons": [
+				"summer"
+			],
+			"sell": 100,
+			"stages": [
+				1,
+				2,
+				3,
+				4
+			]
+		},
+		{
 			"buy": 50,
 			"harvest": {
 				"extra_chance": 0.05,

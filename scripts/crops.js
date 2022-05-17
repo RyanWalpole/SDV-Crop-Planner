@@ -148,6 +148,12 @@ function correct_grow_time(crop_id, days, rate){
             }
             return days
         },
+        "taro_root": function(){
+            if (rate === 0.1 || rate === 0.2) {
+                return days -1;
+            }
+            return days
+        },
         "tomato": function(){
             return days
         },
