@@ -1420,13 +1420,9 @@ function planner_controller($scope){
 
 			// Calculate min/max revenue based on regular/silver/gold chance
 			var regular_chance = planner.player.quality_chance(0, q_mult);
-			console.log("Final Normal chance: " + regular_chance);
 			var silver_chance = planner.player.quality_chance(1, q_mult);
-			console.log("Final Silver chance: " + silver_chance);
 			var gold_chance = planner.player.quality_chance(2, q_mult);
-			console.log("Final Gold chance: " + gold_chance);
 			var iridium_chance = planner.player.quality_chance(3, q_mult);
-			console.log("Final Iridium chance: " + iridium_chance);
 
 			//Tea leaves do not have quality
 			if (crop.tea) {
