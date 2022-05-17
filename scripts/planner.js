@@ -1103,6 +1103,7 @@ function planner_controller($scope){
 			self.profit -= self.buy * plantings;
 			self.profit += self.harvest.min * self.get_sell() * (plantings + regrowths);
 			self.profit = round(self.profit / growth_days, 1);
+			if(self.tea) self.profit = round(43.75,1);
 
 			// Calculate fixed budget profit
 			var budget = 1000; // 1000g worth of seeds

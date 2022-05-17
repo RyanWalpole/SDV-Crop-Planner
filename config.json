@@ -19,11 +19,12 @@
 			]
 		},
 		{
-			"buy": 450,
+			"buy": 0,
 			"harvest": {},
 			"id": "ancient_fruit",
 			"index": 499,
 			"name": "Ancient Fruit",
+			"note":"Can be bought from the Traveling Cart.",
 			"regrow": 7,
 			"seasons": [
 				"spring",
@@ -187,7 +188,7 @@
 			]
 		},
 		{
-			"buy": 2500,
+			"buy": 0,
 			"harvest": {
 				"extra_chance": 0.02,
 				"level_increase": 0,
@@ -197,7 +198,7 @@
 			"id": "coffee_bean",
 			"index": 433,
 			"name": "Coffee Bean",
-			"note": "Sold by Travelling Cart for ~2500g",
+			"note": "Sold by Travelling Cart for ~2500g, also drops from Dust Sprites at a 1% chance",
 			"regrow": 2,
 			"seasons": [
 				"spring",
@@ -594,7 +595,7 @@
 			]
 		},
 		{
-			"buy": 400,
+			"buy": 0,
 			"harvest": {},
 			"id": "pineapple",
 			"index": 833,
@@ -904,7 +905,7 @@
 			]
 		},
 		{
-			"buy": 24,
+			"buy": 0,
 			"harvest": {},
 			"id": "taro_root",
 			"index": 273,
@@ -921,7 +922,7 @@
 			]
 		},
 		{
-			"buy": 24,
+			"buy": 0,
 			"harvest": {},
 			"id": "i_taro_root",
 			"index": 273,
