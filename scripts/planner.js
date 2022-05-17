@@ -940,12 +940,12 @@ function planner_controller($scope){
 			}
 		}
 
-		// Get scalar value of chance of crop being 0=regular; 1=silver; 2=gold quality
+		// Get scalar value of chance of crop being 0=regular; 1=silver; 2=gold quality; ADDING 3=iridium quality
 		// [SOURCE: StardewValley/Crop.cs : function harvest]
 		function quality_chance(quality, mult, locale){
 			quality = quality || 0;		// Default: check regular quality chance
 			mult = mult || 0;			// Multiplier given by type of fertilizer used (0, 1, or 2)
-
+			var iridium_chance = (0.2 * (self.level  /10 )+ 0.2 * mult * ((self.level + 2) / 12) + 0.01) / 2;
 			var gold_chance = 0.2 * (self.level / 10) + 0.2 * mult * ((self.level + 2) / 12) + 0.01;
 			var silver_chance = Math.min(0.75, gold_chance * 2);
 
@@ -960,6 +960,8 @@ function planner_controller($scope){
 				case 2:
 					chance = Math.min(1, gold_chance);
 					break;
+				case 3:
+					chance = Math.min(1, iridium_chance);
 			}
 
 			if (locale) return Math.round(chance * 100);
@@ -1388,9 +1390,10 @@ function planner_controller($scope){
 			var regular_chance = planner.player.quality_chance(0, q_mult);
 			var silver_chance = planner.player.quality_chance(1, q_mult);
 			var gold_chance = planner.player.quality_chance(2, q_mult);
+			var iridium_chance = planner.player.quality_chance(3, q_mult);
 
 			var min_revenue = crop.get_sell(0);
-			var max_revenue = (min_revenue*regular_chance) + (crop.get_sell(1)*silver_chance) + (crop.get_sell(2)*gold_chance);
+			var max_revenue = (min_revenue*regular_chance) + (crop.get_sell(1)*silver_chance) + (crop.get_sell(2)*gold_chance) + (crop.get_sell(3)*iridium_chance);
 			max_revenue = Math.min(crop.get_sell(2), max_revenue);
 
 			// Gatherer profession
