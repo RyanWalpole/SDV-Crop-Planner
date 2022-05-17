@@ -1502,6 +1502,9 @@ function planner_controller($scope){
 				case "delux_speed_gro":
 					rate = 0.25;
 					break;
+				case "hyper_speed_gro":
+					rate = 0.33;
+					break;
 			}
 
 			// Agriculturist profession (ID 5)
