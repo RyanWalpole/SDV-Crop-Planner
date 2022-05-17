@@ -883,6 +883,27 @@
 			"stages": []
 		},
 		{
+			"buy": 0,
+			"harvest": {},
+			"id": "tea_leaves",
+			"index": 251,
+			"name": "Tea Leaves",
+			"note":"Crafted from 5 Fiber and 5 Wood. Can be bought from Traveling Cart for 1500-2500g.",
+			"tea":true,
+			"regrow": 1,
+			"seasons": [
+				"spring",
+				"summer",
+				"fall",
+				"winter"
+			],
+			"sell": 50,
+			"stages": [
+				10,
+				10
+			]
+		},
+		{
 			"buy": 24,
 			"harvest": {},
 			"id": "taro_root",

@@ -154,6 +154,9 @@ function correct_grow_time(crop_id, days, rate){
             }
             return days
         },
+        "tea_leaves": function(){
+            return days
+        },
         "tomato": function(){
             return days
         },
