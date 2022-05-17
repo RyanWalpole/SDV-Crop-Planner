@@ -1403,7 +1403,8 @@ function planner_controller($scope){
 
 			var min_revenue = crop.get_sell(0);
 			var max_revenue = (min_revenue*regular_chance) + (crop.get_sell(1)*silver_chance) + (crop.get_sell(2)*gold_chance) + (crop.get_sell(3)*iridium_chance);
-			max_revenue = Math.min(crop.get_sell(3), max_revenue);
+			//This is tricky. UI implies we're showing both the minimum and maximum profits, but the "max_revenue" calculation gets an average of sorts
+			max_revenue = Math.max(crop.get_sell(2), max_revenue);
 
 			// Gatherer profession
 			if (planner.player.gatherer && crop.wild){
