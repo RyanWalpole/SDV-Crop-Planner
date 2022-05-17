@@ -19,6 +19,13 @@ A tool for planning crop schedules in the Stardew Valley game.
 
 * Added foraging professions
 
+### Nonparelli's to-do
+* Add Ginger Island
+* "Pay for Seed" Toggle when planting
+* Add Fruit Tree support?
+* Changing background to match chosen location?
+* Add support for artisan goods? (Toggle when planting?)
+
 ---
 ## By Exinil
 
