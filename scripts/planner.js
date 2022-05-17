@@ -945,14 +945,14 @@ function planner_controller($scope){
 		function quality_chance(quality, mult, locale){
 			quality = quality || 0;		// Default: check regular quality chance
 			mult = mult || 0;			// Multiplier given by type of fertilizer used (0, 1, or 2)
-			var iridium_chance = (0.2 * (self.level  /10 )+ 0.2 * mult * ((self.level + 2) / 12) + 0.01) / 2;
-			var gold_chance = 0.2 * (self.level / 10) + 0.2 * mult * ((self.level + 2) / 12) + 0.01;
-			var silver_chance = Math.min(0.75, gold_chance * 2);
-
+			//Copying thorinair's formula here, dunno if it'll work though?? UPDATE: Not quite, the quality fertilizer calc is wrong over there, had to tweak it
 			var chance = 0;
+			var iridium_chance = mult >=3 ? (0.2 * (self.level  /10 )+ 0.2 * mult * ((self.level + 2) / 12) + 0.01) / 2 : 0;
+			var gold_chance = (0.2 * (self.level / 10) + 0.2 * mult * ((self.level + 2) / 12) + 0.01)*(1.0-iridium_chance);
+			var silver_chance = mult >=3 ? Math.max(0, 1 - (gold_chance + iridium_chance)) : Math.min(0.75, gold_chance * 2) * (1.0 - gold_chance - iridium_chance);
 			switch (quality){
 				case 0:
-					chance = Math.max(0, 1 - (gold_chance + silver_chance));
+					chance = Math.max(0, 1 - (gold_chance + silver_chance + iridium_chance));
 					break;
 				case 1:
 					chance = Math.min(1, silver_chance);
@@ -962,6 +962,7 @@ function planner_controller($scope){
 					break;
 				case 3:
 					chance = Math.min(1, iridium_chance);
+					break;
 			}
 
 			if (locale) return Math.round(chance * 100);
@@ -1090,8 +1091,9 @@ function planner_controller($scope){
 
 	// Get crop quality-modified sell price
 	// [SOURCE: StardewValley/Object.cs : function sellToStorePrice]
+	// Iridium quality sells at 4 * 0.25
 	Crop.prototype.get_sell = function(quality){
-		quality = quality || 0;
+		quality = quality >= 3 ? 4 : quality || 0;
 		return Math.floor(this.sell * (1 + (quality * 0.25)));
 	};
 
@@ -1379,6 +1381,9 @@ function planner_controller($scope){
 					case "quality_fertilizer":
 						q_mult = 2;
 						break;
+					case "deluxe_fertilizer":
+						q_mult = 3;
+						break;
 				}
 			}
 
@@ -1388,13 +1393,17 @@ function planner_controller($scope){
 
 			// Calculate min/max revenue based on regular/silver/gold chance
 			var regular_chance = planner.player.quality_chance(0, q_mult);
+			console.log("Final Normal chance: " + regular_chance);
 			var silver_chance = planner.player.quality_chance(1, q_mult);
+			console.log("Final Silver chance: " + silver_chance);
 			var gold_chance = planner.player.quality_chance(2, q_mult);
+			console.log("Final Gold chance: " + gold_chance);
 			var iridium_chance = planner.player.quality_chance(3, q_mult);
+			console.log("Final Iridium chance: " + iridium_chance);
 
 			var min_revenue = crop.get_sell(0);
 			var max_revenue = (min_revenue*regular_chance) + (crop.get_sell(1)*silver_chance) + (crop.get_sell(2)*gold_chance) + (crop.get_sell(3)*iridium_chance);
-			max_revenue = Math.min(crop.get_sell(2), max_revenue);
+			max_revenue = Math.min(crop.get_sell(3), max_revenue);
 
 			// Gatherer profession
 			if (planner.player.gatherer && crop.wild){
@@ -1413,6 +1422,8 @@ function planner_controller($scope){
 			// and not to extra dropped yields
 			self.revenue.min = Math.floor(min_revenue) * self.yield.min;
 			self.revenue.max = Math.floor(max_revenue) + (Math.floor(min_revenue) * Math.max(0, self.yield.max - 1));
+			//Extra crops that may or may not occur, ex. 20% extra potatoes or the 2% blueberry
+			if(crop.harvest.extra_chance > 0) self.revenue.max += Math.floor(Math.floor(min_revenue) * (crop.harvest.extra_chance / (1 - crop.harvest.extra_chance)) * plan.amount);
 			self.cost = crop.buy * plan.amount;
 
 			// Tiller profession (ID 1)
