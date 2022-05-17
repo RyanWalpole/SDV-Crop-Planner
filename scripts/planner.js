@@ -1403,8 +1403,6 @@ function planner_controller($scope){
 
 			var min_revenue = crop.get_sell(0);
 			var max_revenue = (min_revenue*regular_chance) + (crop.get_sell(1)*silver_chance) + (crop.get_sell(2)*gold_chance) + (crop.get_sell(3)*iridium_chance);
-			//This is tricky. UI implies we're showing both the minimum and maximum profits, but the "max_revenue" calculation gets an average of sorts
-			max_revenue = Math.max(crop.get_sell(2), max_revenue);
 
 			// Gatherer profession
 			if (planner.player.gatherer && crop.wild){
@@ -1421,10 +1419,10 @@ function planner_controller($scope){
 
 			// Quality from fertilizer only applies to picked harvest
 			// and not to extra dropped yields
-			self.revenue.min = Math.floor(min_revenue) * self.yield.min;
-			self.revenue.max = Math.floor(max_revenue) + (Math.floor(min_revenue) * Math.max(0, self.yield.max - 1));
+			self.revenue.min = min_revenue * self.yield.min;
+			self.revenue.max = Math.floor(max_revenue * plan.amount + (min_revenue * Math.max(0, self.yield.max - plan.amount)));
 			//Extra crops that may or may not occur, ex. 20% extra potatoes or the 2% blueberry
-			if(crop.harvest.extra_chance > 0) self.revenue.max += Math.floor(Math.floor(min_revenue) * (crop.harvest.extra_chance / (1 - crop.harvest.extra_chance)) * plan.amount);
+			if(crop.harvest.extra_chance > 0) self.revenue.max += min_revenue * (crop.harvest.extra_chance / (1 - crop.harvest.extra_chance)) * plan.amount;
 			self.cost = crop.buy * plan.amount;
 
 			// Tiller profession (ID 1)
@@ -1432,6 +1430,10 @@ function planner_controller($scope){
 			if (planner.player.tiller && (crop.id !== 'coffee_bean' && crop.id !== 'sweet_gem_berry' && !crop.wild )){
 				self.revenue.min = Math.floor(self.revenue.min * 1.1);
 				self.revenue.max = Math.floor(self.revenue.max * 1.1);
+			}
+			else{
+				self.revenue.min = Math.floor(self.revenue.min);
+				self.revenue.max = Math.floor(self.revenue.max);
 			}
 
 			// Regrowth
