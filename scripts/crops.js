@@ -109,6 +109,9 @@ function correct_grow_time(crop_id, days, rate){
         "poppy": function(){
             return days
         },
+        "pineapple":function(){
+            return days
+        },
         "potato": function(){
             return days
         },

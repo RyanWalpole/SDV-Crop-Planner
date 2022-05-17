@@ -594,6 +594,25 @@
 			]
 		},
 		{
+			"buy": 400,
+			"harvest": {},
+			"id": "pineapple",
+			"index": 833,
+			"name": "Pineapple",
+			"regrow": 7,
+			"seasons": [
+				"summer"
+			],
+			"sell": 300,
+			"stages": [
+				1,
+				3,
+				3,
+				4,
+				3
+			]
+		},
+		{
 			"buy": 50,
 			"harvest": {
 				"extra_chance": 0.2,
@@ -1055,7 +1074,7 @@
 			"buy": 150,
 			"growth_rate": 0.25,
 			"id": "delux_speed_gro",
-			"name": "Delux Speed-Gro"
+			"name": "Deluxe Speed-Gro"
 		},
 		{
 			"buy": 0,
