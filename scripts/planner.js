@@ -309,6 +309,7 @@ function planner_controller($scope){
 			$.each(plans, function(i, plan){
 				var crop = plan.crop;
 				var first_harvest = date + plan.get_grow_time();
+				if (crop.tea) first_harvest = 22;
 				var planting_cost = plan.get_cost();
 				var season = self.seasons[Math.floor((plan.date-1)/SEASON_DAYS)];
 				var crop_end = crop.end;
@@ -378,14 +379,38 @@ function planner_controller($scope){
 				}
 
 				// Regrowth harvests
-				if (crop.regrow){
+				if (crop.regrow && !crop.tea) {
 					var regrowths = Math.floor((crop_end - first_harvest) / crop.regrow);
-					for (var i = 1; i <= regrowths; i++){
+					for (var i = 1; i <= regrowths; i++) {
 						var regrow_date = first_harvest + (i * crop.regrow);
 						if (regrow_date > crop_end) break;
 						harvests.push(new Harvest(plan, regrow_date, true));
 					}
 				}
+				//Tea Leaves
+				if (crop.tea) {
+						//spring
+						for (var i = 1; i <= 6; i++) {
+							var regrow_date = first_harvest + (i * crop.regrow);
+							harvests.push(new Harvest(plan, regrow_date, true));
+						}
+						//summer
+						for (var i = 28; i <= 34; i++) {
+							var regrow_date = first_harvest + (i * crop.regrow);
+							harvests.push(new Harvest(plan, regrow_date, true));
+						}
+						//fall
+						for (var i = 56; i <= 62; i++) {
+							var regrow_date = first_harvest + (i * crop.regrow);
+							harvests.push(new Harvest(plan, regrow_date, true));
+						}
+						if(farm.greenhouse){
+							for (var i = 84; i <= 90; i++) {
+								var regrow_date = first_harvest + (i * crop.regrow);
+								harvests.push(new Harvest(plan, regrow_date, true));
+							}
+						}
+					}
 
 				// Assign harvests to plan object
 				plan.harvests = harvests;
@@ -945,14 +970,14 @@ function planner_controller($scope){
 		function quality_chance(quality, mult, locale){
 			quality = quality || 0;		// Default: check regular quality chance
 			mult = mult || 0;			// Multiplier given by type of fertilizer used (0, 1, or 2)
-			var iridium_chance = (0.2 * (self.level  /10 )+ 0.2 * mult * ((self.level + 2) / 12) + 0.01) / 2;
-			var gold_chance = 0.2 * (self.level / 10) + 0.2 * mult * ((self.level + 2) / 12) + 0.01;
-			var silver_chance = Math.min(0.75, gold_chance * 2);
-
+			//Copying thorinair's formula here, dunno if it'll work though?? UPDATE: Not quite, the quality fertilizer calc is wrong over there, had to tweak it
 			var chance = 0;
+			var iridium_chance = mult >=3 ? (0.2 * (self.level  /10 )+ 0.2 * mult * ((self.level + 2) / 12) + 0.01) / 2 : 0;
+			var gold_chance = (0.2 * (self.level / 10) + 0.2 * mult * ((self.level + 2) / 12) + 0.01)*(1.0-iridium_chance);
+			var silver_chance = mult >=3 ? Math.max(0, 1 - (gold_chance + iridium_chance)) : Math.min(0.75, gold_chance * 2) * (1.0 - gold_chance - iridium_chance);
 			switch (quality){
 				case 0:
-					chance = Math.max(0, 1 - (gold_chance + silver_chance));
+					chance = Math.max(0, 1 - (gold_chance + silver_chance + iridium_chance));
 					break;
 				case 1:
 					chance = Math.min(1, silver_chance);
@@ -962,6 +987,7 @@ function planner_controller($scope){
 					break;
 				case 3:
 					chance = Math.min(1, iridium_chance);
+					break;
 			}
 
 			if (locale) return Math.round(chance * 100);
@@ -1015,6 +1041,7 @@ function planner_controller($scope){
 		self.stages = [];
 		self.regrow;
 		self.wild = false;
+		self.tea = false;
 
 		// Harvest data
 		self.harvest = {
@@ -1049,6 +1076,7 @@ function planner_controller($scope){
 			self.regrow = data.regrow;
 			if (data.wild) self.wild = data.wild;
 			if (data.possible_crops) self.possible_crops = data.possible_crops
+			if (data.tea) self.tea = data.tea;
 
 			// Harvest data
 			if (data.harvest.min) self.harvest.min = data.harvest.min;
@@ -1068,7 +1096,6 @@ function planner_controller($scope){
 			// Calculate profit per day
 			var season_days = (self.end - self.start) + 1;
 			var regrowths = self.regrow ? Math.floor(((season_days - 1) - self.grow) / self.regrow) : 0;
-
 			var plantings = 1;
 			if (!regrowths) plantings = Math.floor((season_days - 1) / self.grow);
 			var growth_days = (plantings * self.grow) + (regrowths * (self.regrow ? self.regrow : 0));
@@ -1076,6 +1103,7 @@ function planner_controller($scope){
 			self.profit -= self.buy * plantings;
 			self.profit += self.harvest.min * self.get_sell() * (plantings + regrowths);
 			self.profit = round(self.profit / growth_days, 1);
+			if(self.tea) self.profit = round(43.75,1);
 
 			// Calculate fixed budget profit
 			var budget = 1000; // 1000g worth of seeds
@@ -1090,8 +1118,9 @@ function planner_controller($scope){
 
 	// Get crop quality-modified sell price
 	// [SOURCE: StardewValley/Object.cs : function sellToStorePrice]
+	// Iridium quality sells at 4 * 0.25
 	Crop.prototype.get_sell = function(quality){
-		quality = quality || 0;
+		quality = quality >= 3 ? 4 : quality || 0;
 		return Math.floor(this.sell * (1 + (quality * 0.25)));
 	};
 
@@ -1342,22 +1371,22 @@ function planner_controller($scope){
 	/****************
 	 Harvest class - represents crops harvested on a date
 	 ****************/
-	function Harvest(plan, date, is_regrowth){
+	function Harvest(plan, date, is_regrowth) {
 		var self = this;
 		self.date = 0;
 		self.plan = {};
 		self.crop = {};
-		self.yield = {min: 0, max: 0};
-		self.revenue = {min: 0, max: 0};
+		self.yield = { min: 0, max: 0 };
+		self.revenue = { min: 0, max: 0 };
 		self.cost = 0;
-		self.profit = {min: 0, max: 0};
+		self.profit = { min: 0, max: 0 };
 		self.is_regrowth = false;
 
 
 		init();
 
 
-		function init(){
+		function init() {
 			if (!plan || !date) return;
 			var crop = plan.crop;
 			self.plan = plan;
@@ -1367,17 +1396,20 @@ function planner_controller($scope){
 			// Calculate crop yield (+ extra crop drops)
 			// [SOURCE: StardewValley/Crop.cs : function harvest]
 			self.yield.min = crop.harvest.min * plan.amount;
-			self.yield.max = (Math.min(crop.harvest.min + 1, crop.harvest.max + 1 + (planner.player.level / crop.harvest.level_increase))-1) * plan.amount;
+			self.yield.max = (Math.min(crop.harvest.min + 1, crop.harvest.max + 1 + (planner.player.level / crop.harvest.level_increase)) - 1) * plan.amount;
 
 			// Harvest revenue and costs
 			var q_mult = 0;
-			if (plan.fertilizer && !plan.fertilizer.is_none()){
-				switch (plan.fertilizer.id){
+			if (plan.fertilizer && !plan.fertilizer.is_none()) {
+				switch (plan.fertilizer.id) {
 					case "basic_fertilizer":
 						q_mult = 1;
 						break;
 					case "quality_fertilizer":
 						q_mult = 2;
+						break;
+					case "deluxe_fertilizer":
+						q_mult = 3;
 						break;
 				}
 			}
@@ -1392,38 +1424,48 @@ function planner_controller($scope){
 			var gold_chance = planner.player.quality_chance(2, q_mult);
 			var iridium_chance = planner.player.quality_chance(3, q_mult);
 
+			//Tea leaves do not have quality
+			if (crop.tea) {
+				regular_chance = 1;
+				silver_chance = gold_chance = iridium_chance = 0;
+			}
 			var min_revenue = crop.get_sell(0);
-			var max_revenue = (min_revenue*regular_chance) + (crop.get_sell(1)*silver_chance) + (crop.get_sell(2)*gold_chance) + (crop.get_sell(3)*iridium_chance);
-			max_revenue = Math.min(crop.get_sell(2), max_revenue);
+			var max_revenue = (min_revenue * regular_chance) + (crop.get_sell(1) * silver_chance) + (crop.get_sell(2) * gold_chance) + (crop.get_sell(3) * iridium_chance);
 
 			// Gatherer profession
-			if (planner.player.gatherer && crop.wild){
-				for (var i = 0; i < self.yield.min; i++){
+			if (planner.player.gatherer && crop.wild) {
+				for (var i = 0; i < self.yield.min; i++) {
 					if (Math.floor(Math.random() * 10) < 2) self.yield.max += 1
 				}
 			}
 
 			// Botanist profession (ID 16)
-			if (planner.player.botanist && (crop.wild)){
+			if (planner.player.botanist && (crop.wild)) {
 				min_revenue = crop.get_sell(4)
 				max_revenue = min_revenue
 			}
 
 			// Quality from fertilizer only applies to picked harvest
 			// and not to extra dropped yields
-			self.revenue.min = Math.floor(min_revenue) * self.yield.min;
-			self.revenue.max = Math.floor(max_revenue) + (Math.floor(min_revenue) * Math.max(0, self.yield.max - 1));
+			self.revenue.min = min_revenue * self.yield.min;
+			self.revenue.max = Math.floor(max_revenue * plan.amount + (min_revenue * Math.max(0, self.yield.max - plan.amount)));
+			//Extra crops that may or may not occur, ex. 20% extra potatoes or the 2% blueberry
+			if (crop.harvest.extra_chance > 0) self.revenue.max += min_revenue * (crop.harvest.extra_chance / (1 - crop.harvest.extra_chance)) * plan.amount;
 			self.cost = crop.buy * plan.amount;
 
 			// Tiller profession (ID 1)
 			// [SOURCE: StardewValley/Object.cs : function sellToStorePrice]
-			if (planner.player.tiller && (crop.id !== 'coffee_bean' && crop.id !== 'sweet_gem_berry' && !crop.wild )){
+			if (planner.player.tiller && (crop.id !== 'coffee_bean' && crop.id !== 'sweet_gem_berry' && !crop.wild)) {
 				self.revenue.min = Math.floor(self.revenue.min * 1.1);
 				self.revenue.max = Math.floor(self.revenue.max * 1.1);
 			}
+			else {
+				self.revenue.min = Math.floor(self.revenue.min);
+				self.revenue.max = Math.floor(self.revenue.max);
+			}
 
 			// Regrowth
-			if (is_regrowth){
+			if (is_regrowth) {
 				self.is_regrowth = true;
 				self.cost = 0;
 			}
@@ -1431,6 +1473,7 @@ function planner_controller($scope){
 			// Harvest profit
 			self.profit.min = self.revenue.min - self.cost;
 			self.profit.max = self.revenue.max - self.cost;
+
 		}
 	}
 
@@ -1492,7 +1535,7 @@ function planner_controller($scope){
 	Plan.prototype.get_grow_time = function(){
 		var stages = $.extend([], this.crop.stages);
 
-		if (this.fertilizer.id == "speed_gro" || this.fertilizer.id == "delux_speed_gro" || planner.player.agriculturist){
+		if (this.fertilizer.id == "speed_gro" || this.fertilizer.id == "delux_speed_gro" || this.fertilizer.id == "hyper_speed_gro" || planner.player.agriculturist){
 			// [SOURCE: StardewValley.TerrainFeatures/HoeDirt.cs : function plant]
 			var rate = 0;
 			switch (this.fertilizer.id){
@@ -1509,14 +1552,12 @@ function planner_controller($scope){
 
 			// Agriculturist profession (ID 5)
 			if (planner.player.agriculturist) rate += 0.1;
-
 			// Days to remove
 			var remove_days = Math.ceil(this.crop.grow * rate);
 
 			// For removing more than one day from larger stages of growth
 			// when there are still days to remove
 			var multi_remove = 0;
-
 			// Remove days from stages
 			while (remove_days > 0 && multi_remove < 3){
 				for (var i = 0; i < stages.length; i++){
@@ -1537,8 +1578,7 @@ function planner_controller($scope){
 		for (var i = 0; i < stages.length; i++){
 			days += stages[i];
 		}
-
-		//days = correct_grow_time(this.crop.id, days, rate);
+		days = correct_grow_time(this.crop.id, days, rate);
 
 		return days;
 	};
