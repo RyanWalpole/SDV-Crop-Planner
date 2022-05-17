@@ -68,15 +68,24 @@ function correct_grow_time(crop_id, days, rate){
             if (rate === 0.1 || rate === 0.2) {
                 return days - 1;
             }
+            if (rate === 0.43000000000000005){
+                return days + 1;
+            }
             return days
         },
         "green_bean": function(){
             if (rate === 0.1 || rate === 0.2) {
-                return days - 1;
+                return days -1;
+            }
+            if (rate === 0.43000000000000005){
+                return days + 1;
             }
             return days
         },
         "hops": function(){
+            if (rate === 0.43000000000000005){
+                return days + 1;
+            }
             return days
         },
         "hot_pepper": function(){

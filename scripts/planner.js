@@ -1492,7 +1492,7 @@ function planner_controller($scope){
 	Plan.prototype.get_grow_time = function(){
 		var stages = $.extend([], this.crop.stages);
 
-		if (this.fertilizer.id == "speed_gro" || this.fertilizer.id == "delux_speed_gro" || planner.player.agriculturist){
+		if (this.fertilizer.id == "speed_gro" || this.fertilizer.id == "delux_speed_gro" || this.fertilizer.id == "hyper_speed_gro" || planner.player.agriculturist){
 			// [SOURCE: StardewValley.TerrainFeatures/HoeDirt.cs : function plant]
 			var rate = 0;
 			switch (this.fertilizer.id){
@@ -1509,7 +1509,6 @@ function planner_controller($scope){
 
 			// Agriculturist profession (ID 5)
 			if (planner.player.agriculturist) rate += 0.1;
-
 			// Days to remove
 			var remove_days = Math.ceil(this.crop.grow * rate);
 
@@ -1538,7 +1537,7 @@ function planner_controller($scope){
 			days += stages[i];
 		}
 
-		//days = correct_grow_time(this.crop.id, days, rate);
+		days = correct_grow_time(this.crop.id, days, rate);
 
 		return days;
 	};
