@@ -1538,7 +1538,7 @@ function planner_controller($scope){
 			days += stages[i];
 		}
 
-		days = correct_grow_time(this.crop.id, days, rate);
+		//days = correct_grow_time(this.crop.id, days, rate);
 
 		return days;
 	};
