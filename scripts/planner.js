@@ -1466,7 +1466,7 @@ function planner_controller($scope){
 			self.revenue.max = Math.floor(max_revenue * plan.amount + (min_revenue * Math.max(0, self.yield.max - plan.amount)));
 			//Extra crops that may or may not occur, ex. 20% extra potatoes or the 2% blueberry
 			if (crop.harvest.extra_chance > 0) self.revenue.max += min_revenue * (crop.harvest.extra_chance / (1 - crop.harvest.extra_chance)) * plan.amount;
-			self.cost = crop.buy * plan.amount;
+			if (plan.pay) self.cost = crop.buy * plan.amount;
 
 			// Tiller profession (ID 1)
 			// [SOURCE: StardewValley/Object.cs : function sellToStorePrice]
@@ -1522,6 +1522,7 @@ function planner_controller($scope){
 		self.fertilizer = planner.fertilizer["none"];
 		self.harvests = [];
 		self.greenhouse = false;
+		self.pay;
 
 
 		init();
@@ -1532,6 +1533,7 @@ function planner_controller($scope){
 			self.date = data.date;
 			self.crop = planner.crops[data.crop];
 			self.amount = data.amount;
+			self.pay = data.pay;
 			if (data.fertilizer && planner.fertilizer[data.fertilizer])
 				self.fertilizer = planner.fertilizer[data.fertilizer];
 			self.greenhouse = in_greenhouse ? true : false;
@@ -1543,6 +1545,7 @@ function planner_controller($scope){
 		var data = {};
 		data.crop = this.crop.id;
 		data.amount = this.amount;
+		data.pay = this.pay;
 		if (this.fertilizer && !this.fertilizer.is_none()) data.fertilizer = this.fertilizer.id;
 		return data;
 	};
@@ -1600,6 +1603,7 @@ function planner_controller($scope){
 
 	Plan.prototype.get_cost = function(locale){
 		var amount = this.crop.buy * this.amount;
+		if (!this.pay) amount = 0;
 		if (locale) return amount.toLocaleString();
 		return amount;
 	};
