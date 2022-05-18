@@ -619,7 +619,9 @@ function planner_controller($scope){
 
 	// Check if current farm mode is greenhouse
 	function in_greenhouse(){
-		return self.cmode == "greenhouse" || "ginger_island";
+		if (self.cmode == "greenhouse") return true;
+		if (self.cmode == "ginger_island") return true;
+		if (self.cmode == "farm") return false;
 	}
 
 	// Toggle current farm mode
