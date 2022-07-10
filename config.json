@@ -19,12 +19,12 @@
 			]
 		},
 		{
-			"buy": 0,
+			"buy": 450,
 			"harvest": {},
 			"id": "ancient_fruit",
 			"index": 499,
 			"name": "Ancient Fruit",
-			"note":"Can be bought from the Traveling Cart.",
+			"note":"Can be bought from the Traveling Cart, price ranges from 100-1,000g",
 			"regrow": 7,
 			"seasons": [
 				"spring",
@@ -188,7 +188,7 @@
 			]
 		},
 		{
-			"buy": 0,
+			"buy": 2500,
 			"harvest": {
 				"extra_chance": 0.02,
 				"level_increase": 0,
@@ -595,11 +595,12 @@
 			]
 		},
 		{
-			"buy": 0,
+			"buy": 400,
 			"harvest": {},
 			"id": "pineapple",
 			"index": 833,
 			"name": "Pineapple",
+			"note": "1 Magma Cap for 1 Seed at the Island Trader.",
 			"regrow": 7,
 			"seasons": [
 				"summer"
@@ -884,12 +885,12 @@
 			"stages": []
 		},
 		{
-			"buy": 0,
+			"buy": 500,
 			"harvest": {},
 			"id": "tea_leaves",
 			"index": 251,
 			"name": "Tea Leaves",
-			"note":"Crafted from 5 Fiber and 5 Wood. Can be bought from Traveling Cart for 1500-2500g.",
+			"note":"Crafted from 2 Wild Seeds, 5 Fiber and 5 Wood. A Tea Sapling sells for 500g, which takes the Tea Bush two seasons to cover.",
 			"tea":true,
 			"regrow": 1,
 			"seasons": [
@@ -905,11 +906,12 @@
 			]
 		},
 		{
-			"buy": 0,
+			"buy": 24,
 			"harvest": {},
 			"id": "taro_root",
 			"index": 273,
 			"name": "Taro Root",
+			"note": "2 Bone Fragments at the Island Trader.",
 			"seasons": [
 				"summer"
 			],
@@ -922,11 +924,12 @@
 			]
 		},
 		{
-			"buy": 0,
+			"buy": 24,
 			"harvest": {},
 			"id": "i_taro_root",
 			"index": 273,
-			"name": "Irrigated Taro Root",
+			"name": "Taro Root (Irrigated)",
+			"note":"2 Bone Fragments at the Island Trader.",
 			"seasons": [
 				"summer"
 			],
@@ -1012,7 +1015,7 @@
 			},
 			"id": "i_unmilled_rice",
 			"index": 273,
-			"name": "Irrigated Unmilled Rice",
+			"name": "Unmilled Rice (Irrigated)",
 			"scythe": true,
 			"seasons": [
 				"spring"

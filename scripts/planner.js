@@ -59,6 +59,7 @@ function planner_controller($scope){
 	self.cdate;							// Current date to add plan to
 	self.cseason;						// Current season
 	self.cmode = "farm";				// Current farm mode (farm / greenhouse)
+	self.cmodename = "farm";			// This is to fix ginger island display bc i suck
 	self.cyear;							// Current year
 
 	self.newplan;
@@ -200,6 +201,7 @@ function planner_controller($scope){
 				// Update plans
 				update(self.years[0].data.farm, true); // Update farm
 				update(self.years[0].data.greenhouse, true); // Update greenhouse
+				update(self.years[0].data.ginger_island, true); // Update Ginger Island
 
 				self.loaded = true;
 				$scope.$apply();
@@ -314,7 +316,7 @@ function planner_controller($scope){
 				var season = self.seasons[Math.floor((plan.date-1)/SEASON_DAYS)];
 				var crop_end = crop.end;
 
-				if (farm.greenhouse){
+				if (farm.greenhouse || farm.ginger_island){
 					crop_end = YEAR_DAYS;
 				}
 
@@ -404,7 +406,7 @@ function planner_controller($scope){
 							var regrow_date = first_harvest + (i * crop.regrow);
 							harvests.push(new Harvest(plan, regrow_date, true));
 						}
-						if(farm.greenhouse){
+						if(farm.greenhouse || farm.ginger_island){
 							for (var i = 84; i <= 90; i++) {
 								var regrow_date = first_harvest + (i * crop.regrow);
 								harvests.push(new Harvest(plan, regrow_date, true));
@@ -617,13 +619,17 @@ function planner_controller($scope){
 
 	// Check if current farm mode is greenhouse
 	function in_greenhouse(){
-		return self.cmode == "greenhouse";
+		if (self.cmode == "greenhouse") return true;
+		if (self.cmode == "ginger_island") return true;
+		if (self.cmode == "farm") return false;
 	}
 
 	// Toggle current farm mode
 	function toggle_mode(){
 		if (self.cmode == "farm"){
 			set_mode("greenhouse");
+		} else if (self.cmode == "greenhouse"){
+			set_mode("ginger_island");
 		} else {
 			set_mode("farm");
 		}
@@ -632,6 +638,8 @@ function planner_controller($scope){
 	// Set current farm mode
 	function set_mode(mode){
 		self.cmode = mode;
+		self.cmodename = mode;
+		if(mode =="ginger_island") self.cmodename = "ginger island";
 	}
 
 	////////////////////////////////
@@ -842,6 +850,7 @@ function planner_controller($scope){
 				//planner.player.load();
 				update(planner.years[0].data.farm, true); // Update farm
 				update(planner.years[0].data.greenhouse, true); // Update greenhouse
+				update(planner.years[0].data.ginger_island, true); // Update Ginger Island
 				$scope.$apply();
 				alert("Successfully imported " + plan_count + " plans into " + planner.years.length + " year(s).");
 				console.log("Imported " + plan_count + " plans into " + planner.years.length + " year(s).");
@@ -860,7 +869,7 @@ function planner_controller($scope){
 			if (!plan_data){ alert("No plan data to import"); return; }
 
 			// Create new plan data
-			var new_plans = [{"farm":{}, "greenhouse":{}}];
+			var new_plans = [{"farm":{}, "greenhouse":{},"ginger_island":{}}];
 			$.each(plan_data, function(date, plans){
 				date = parseInt(date);
 				$.each(plans, function(i, plan){
@@ -871,7 +880,12 @@ function planner_controller($scope){
 						if (!new_plans[0].greenhouse[date]) new_plans[0].greenhouse[date] = [];
 						delete plan.greenhouse;
 						new_plans[0].greenhouse[date].push(plan);
-					} else {
+					} else if (plan.ginger_island){
+						if (!new_plans[0].ginger_island[date]) new_plans[0].ginger_island[date] = [];
+						delete plan.ginger_island;
+						new_plans[0].ginger_island[date].push(plan);
+					}
+					else {
 						if (!new_plans[0].farm[date]) new_plans[0].farm[date] = [];
 						new_plans[0].farm[date].push(plan);
 					}
@@ -1192,6 +1206,7 @@ function planner_controller($scope){
 
 			self.data.farm = new Farm(self);
 			self.data.greenhouse = new Farm(self, true);
+			self.data.ginger_island = new Farm(self, true, true);
 		}
 	}
 
@@ -1319,14 +1334,14 @@ function planner_controller($scope){
 	/****************
 	 Farm class - used only within Year
 	 ****************/
-	function Farm(parent_year, is_greenhouse){
+	function Farm(parent_year, is_greenhouse, is_ginger){
 		var self = this;
 		self.year;
 		self.greenhouse = false;
 		self.plans = {};
 		self.harvests = {};
 		self.totals = {};
-
+		self.ginger = false;
 
 		init();
 
@@ -1334,7 +1349,7 @@ function planner_controller($scope){
 		function init(){
 			self.year = parent_year;
 			self.greenhouse = is_greenhouse;
-
+			self.ginger = is_ginger;
 			for (var i = 0; i < YEAR_DAYS; i++){
 				self.plans[i+1] = [];
 			}
@@ -1364,7 +1379,9 @@ function planner_controller($scope){
 
 	// Get image representing farm type
 	Farm.prototype.get_image = function(){
-		var type = this.greenhouse ? "greenhouse" : "scarecrow";
+		var type = "scarecrow";
+		if(this.greenhouse) type = "greenhouse";
+		if(this.ginger) type = "ginger_island";
 		return "images/" + type + ".png";
 	};
 
@@ -1414,9 +1431,9 @@ function planner_controller($scope){
 				}
 			}
 
-			// Fertilizers expire at the beginning of a new season in the greenhouse
-			if (self.plan.greenhouse && (planner.get_season(self.date) != planner.get_season(self.plan.date)))
-				q_mult = 0;
+			// Fertilizers expire at the beginning of a new season in the greenhouse 1.5: Fertilizers no longer expire at the change of the season
+			//if (self.plan.greenhouse && (planner.get_season(self.date) != planner.get_season(self.plan.date)))
+			//	q_mult = 0;
 
 			// Calculate min/max revenue based on regular/silver/gold chance
 			var regular_chance = planner.player.quality_chance(0, q_mult);
@@ -1451,7 +1468,7 @@ function planner_controller($scope){
 			self.revenue.max = Math.floor(max_revenue * plan.amount + (min_revenue * Math.max(0, self.yield.max - plan.amount)));
 			//Extra crops that may or may not occur, ex. 20% extra potatoes or the 2% blueberry
 			if (crop.harvest.extra_chance > 0) self.revenue.max += min_revenue * (crop.harvest.extra_chance / (1 - crop.harvest.extra_chance)) * plan.amount;
-			self.cost = crop.buy * plan.amount;
+			if (plan.pay) self.cost = crop.buy * plan.amount;
 
 			// Tiller profession (ID 1)
 			// [SOURCE: StardewValley/Object.cs : function sellToStorePrice]
@@ -1507,6 +1524,7 @@ function planner_controller($scope){
 		self.fertilizer = planner.fertilizer["none"];
 		self.harvests = [];
 		self.greenhouse = false;
+		self.pay;
 
 
 		init();
@@ -1517,6 +1535,7 @@ function planner_controller($scope){
 			self.date = data.date;
 			self.crop = planner.crops[data.crop];
 			self.amount = data.amount;
+			self.pay = data.pay;
 			if (data.fertilizer && planner.fertilizer[data.fertilizer])
 				self.fertilizer = planner.fertilizer[data.fertilizer];
 			self.greenhouse = in_greenhouse ? true : false;
@@ -1528,6 +1547,7 @@ function planner_controller($scope){
 		var data = {};
 		data.crop = this.crop.id;
 		data.amount = this.amount;
+		data.pay = this.pay;
 		if (this.fertilizer && !this.fertilizer.is_none()) data.fertilizer = this.fertilizer.id;
 		return data;
 	};
@@ -1585,6 +1605,7 @@ function planner_controller($scope){
 
 	Plan.prototype.get_cost = function(locale){
 		var amount = this.crop.buy * this.amount;
+		if (!this.pay) amount = 0;
 		if (locale) return amount.toLocaleString();
 		return amount;
 	};
